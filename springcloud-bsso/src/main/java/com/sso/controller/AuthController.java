@@ -39,6 +39,7 @@ public class AuthController {
     @RequestMapping("login")
     public ResponseResult toLogin(@RequestBody Map<String,Object> map) throws LoginException {
         ResponseResult responseResult = ResponseResult.getResponseResult();
+        //从redis中取出code
         String codekey = redisTemplate.opsForValue().get(map.get("codekey")).toString();
         System.out.println("-------"+codekey);
         if (codekey == null || !codekey.equals(map.get("code").toString())) {
