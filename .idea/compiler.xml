@@ -11,6 +11,7 @@
         <module name="springcloud-bsso" />
         <module name="springcloud-cpojo" />
         <module name="springcloud-gateway" />
+        <module name="springcloud-service" />
       </profile>
     </annotationProcessing>
   </component>
