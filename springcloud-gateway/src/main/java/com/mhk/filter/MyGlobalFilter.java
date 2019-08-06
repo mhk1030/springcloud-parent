@@ -51,6 +51,7 @@ public class MyGlobalFilter implements GlobalFilter {
         }else{
             //获取请求头中的token
             List<String> list = request.getHeaders().get("token");
+            System.out.println(list);
             //解密Token校验是否超时，如果超时的话需要重新登录============该步骤是校验Token的
             JSONObject jsonObject = null;
 
