@@ -51,14 +51,15 @@ public class AuthController {
             User user = userService.getUserByLogin(map.get("loginname").toString());
             if (user != null) {
                 String password = MD5.encryptPassword(map.get("password").toString(), "mhk");
+                System.out.println(password);
                 if (user.getPassword().equals(password)) {
                     String userinfo = JSON.toJSONString(user);
                     String token = JWTUtils.generateToken(userinfo);
                     responseResult.setToken(token);
 
-                    redisTemplate.opsForValue().set("USERINFO" + user.getId().toString(), token);
+                    redisTemplate.opsForValue().set("USERINFO" + user.getId(), token);
 
-                    redisTemplate.opsForHash().putAll("USERDATAAUTH" + user.getId().toString(), user.getAuthmap());
+                    redisTemplate.opsForHash().putAll("USERDATAAUTH" + user.getId(), user.getAuthmap());
 
                     redisTemplate.expire("USERINFO" + user.getId().toString(), 600, TimeUnit.SECONDS);
 

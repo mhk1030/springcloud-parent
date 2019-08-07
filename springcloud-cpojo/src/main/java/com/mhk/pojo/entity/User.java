@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
@@ -17,7 +18,7 @@ import java.util.Map;
 @Data
 @Entity
 @Table(name = "base_user")
-public class User extends BaseAuditable {
+public class User extends BaseAuditable implements Serializable {
 
     @Column(name = "userName")
     private String userName;

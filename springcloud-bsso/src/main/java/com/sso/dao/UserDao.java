@@ -2,6 +2,7 @@ package com.sso.dao;
 
 import com.mhk.pojo.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 /**
  * @作者 孟慧康
@@ -9,5 +10,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface UserDao extends JpaRepository<User,Long> {
 
+   
     public User findByLoginName(String loginName);
 }
