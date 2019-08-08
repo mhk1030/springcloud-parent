@@ -32,7 +32,7 @@ public class UserService {
     @Autowired
     private LocalContainerEntityManagerFactoryBean localContainerEntityManagerFactoryBean;
 
-    public  Map<String, Object> selAll(Integer cpage,Integer pageSize,String uname,String start,String end){
+    public  Map<String, Object> selAll(Integer cpage,Integer pageSize,String uname,String start,String end,String sex){
         EntityManager entityManager = localContainerEntityManagerFactoryBean.getNativeEntityManagerFactory().createEntityManager();
 
         StringBuffer stringBuffer = new StringBuffer("select * from base_user where 1=1");
@@ -50,10 +50,11 @@ public class UserService {
             stringBuffer.append(" and createTime <= '"+end+"'");
             stringBuffer1.append(" and createTime <= '"+end+"'");
         }
-        /*if(sex != null){
-            stringBuffer.append(" and sex = "+sex+"");
-            stringBuffer1.append(" and sex = "+sex+"");
-        }*/
+        if(sex != null && sex!= ""){
+            Integer sex1 = Integer.valueOf(sex);
+            stringBuffer.append(" and sex = "+sex1+"");
+            stringBuffer1.append(" and sex = "+sex1+"");
+        }
 
         stringBuffer.append(" limit "+(cpage-1)*pageSize+","+pageSize);
 
@@ -61,15 +62,42 @@ public class UserService {
         Query nativeQuery1 = entityManager.createNativeQuery(stringBuffer1.toString());
 
         List<User> list = nativeQuery.getResultList();
-        for (User user: list) {
+        /*for (User user: list) {
             Role role = roleDao.selById(user.getId());
             user.setRole(role);
-        }
+        }*/
+
+
 
         Map<String, Object> map = new HashMap<>();
         map.put("total",nativeQuery1.getResultList().get(0));
         map.put("list",list);
         return map;
+    }
+
+
+
+
+    public void add(User user){
+        userDao.save(user);
+    }
+
+    public void del(Long id){
+        userDao.deleteById(id);
+    }
+
+    public List<Role> selRole(){
+        List<Role> list = roleDao.findAll();
+        return list;
+    }
+
+
+    public void delRole(Long userId){
+        userDao.delRole(userId);
+    }
+
+    public void addRole(long roleId,long userId){
+        userDao.addRole(roleId,userId);
     }
 
 

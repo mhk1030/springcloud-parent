@@ -5,6 +5,7 @@ import lombok.Data;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
@@ -15,6 +16,10 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "base_role")
 public class Role extends BaseAuditable {
+
+    @Column(name="id")
+    @Id
+    Long id;
 
     @Column(name = "roleName")
     private String roleName;

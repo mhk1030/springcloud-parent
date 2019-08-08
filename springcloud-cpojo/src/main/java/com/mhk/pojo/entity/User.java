@@ -3,11 +3,9 @@ package com.mhk.pojo.entity;
 import com.mhk.pojo.base.BaseAuditable;
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.sql.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -18,7 +16,11 @@ import java.util.Map;
 @Data
 @Entity
 @Table(name = "base_user")
-public class User extends BaseAuditable implements Serializable {
+public class User  {
+
+    @Column(name="id")
+    @Id
+    Long id;
 
     @Column(name = "userName")
     private String userName;
@@ -37,6 +39,12 @@ public class User extends BaseAuditable implements Serializable {
 
     @Column(name = "parentId")
     private Long parentId;
+
+    @Column(name = "url")
+    private String url;
+
+    @Column(name = "createTime")
+    private Date createTime;
 
     @Transient
     private List<Menu> menuList;

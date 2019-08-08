@@ -1,6 +1,8 @@
 package com.mhk.pojo.base;
 
 import lombok.Data;
+
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -16,16 +18,20 @@ import java.sql.Date;
 @Data
 public class BaseAuditable {
 
-    @Column(name = "id")
+   @Column(name="id")
     @Id
     Long id;
 
     @LastModifiedDate
-    @Column(name = "updateTime")
+    @Column(name="updateTime")
     Date updateTime;
 
-    @Column(name = "version")
+    @CreatedDate
+    @Column(name="createTime")
+    Date createTime;
+
     @Version
+    @Column(name = "version")
     private Long version;
 
 

@@ -10,6 +10,6 @@ import org.springframework.data.jpa.repository.Query;
  */
 public interface UserDao extends JpaRepository<User,Long> {
 
-   
+
     public User findByLoginName(String loginName);
 }
