@@ -3,10 +3,8 @@ package com.mhk.pojo.entity;
 import com.mhk.pojo.base.BaseAuditable;
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.List;
 
 /**
  * @作者 孟慧康
@@ -27,5 +25,10 @@ public class Role extends BaseAuditable {
     @Column(name = "miaoshu")
     private String miaoshu;
 
+    @Transient
+    private List<Long> menuIds;
+
+    @Transient
+    private Long[] menuId;
 
 }

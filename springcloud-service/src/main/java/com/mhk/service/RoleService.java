@@ -1,10 +1,13 @@
 package com.mhk.service;
 
 import com.github.pagehelper.PageInfo;
+import com.mhk.pojo.entity.Menu;
 import com.mhk.pojo.entity.Role;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @作者 孟慧康
@@ -19,5 +22,8 @@ public interface RoleService {
 
     public void update(Role role);
 
-    public void del(long id);
+    public void del(Long id);
+
+
+    public List<Menu> selMenu(Long pid,Integer leval);
 }

@@ -2,14 +2,17 @@ package com.mhk.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.mhk.pojo.ResponseResult;
+import com.mhk.pojo.entity.Menu;
 import com.mhk.pojo.entity.Role;
 import com.mhk.service.RoleService;
+import com.mhk.utils.UID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -17,12 +20,13 @@ import java.util.Map;
  * @时间 2019/8/8 23:41
  */
 @RestController
+@RequestMapping("role")
 public class RoleController {
 
     @Autowired
     private RoleService roleService;
 
-    @RequestMapping("list")
+    @RequestMapping("roleList")
     public ResponseResult selAll(@RequestBody Map<String,String> map){
         PageInfo<Role> pageInfo = roleService.selAll(Integer.valueOf(map.get("cpage")), Integer.valueOf(map.get("pageSize")), map.get("roleName"));
         ResponseResult responseResult = ResponseResult.getResponseResult();
@@ -31,15 +35,17 @@ public class RoleController {
         return responseResult;
     }
 
-    @RequestMapping("add")
+    @RequestMapping("roleAdd")
     public ResponseResult add(@RequestBody Role role){
+        role.setId(UID.next());
+        System.out.println(role);
         roleService.add(role);
         ResponseResult responseResult = ResponseResult.getResponseResult();
         responseResult.setCode(200);
         return  responseResult;
     }
 
-    @RequestMapping("update")
+    @RequestMapping("roleUpdate")
     public ResponseResult update(@RequestBody Role role){
         roleService.update(role);
         ResponseResult responseResult = ResponseResult.getResponseResult();
@@ -47,12 +53,21 @@ public class RoleController {
         return  responseResult;
     }
 
-    @RequestMapping("del")
+    @RequestMapping("roleDel")
     public ResponseResult del(@RequestBody Role role){
         roleService.del(role.getId());
         ResponseResult responseResult = ResponseResult.getResponseResult();
         responseResult.setCode(200);
         return  responseResult;
+    }
+
+    @RequestMapping("power")
+    public ResponseResult power(){
+        List<Menu> list = roleService.selMenu(0L, 1);
+        ResponseResult responseResult = ResponseResult.getResponseResult();
+        responseResult.setResult(list);
+        responseResult.setCode(200);
+        return responseResult;
     }
 
 
