@@ -1,8 +1,7 @@
 package com.mhk.service;
 
 import com.mhk.pojo.entity.Menu;
-import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Service;
+
 
 import java.util.List;
 
@@ -13,4 +12,15 @@ import java.util.List;
 public interface MenuService {
 
     public List<Menu> selMenu( Long pid,Integer leval);
+
+    public void add(Menu menu);
+
+    public  void update(Menu menu);
+
+    public void del(Long id);
+
+
+    public void delByMenuId( Long menuId);
+
+
 }

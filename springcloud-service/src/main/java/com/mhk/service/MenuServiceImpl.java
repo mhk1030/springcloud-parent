@@ -38,4 +38,28 @@ public class MenuServiceImpl implements MenuService{
         }
 
     }
+
+
+    @Override
+    public void add(Menu menu) {
+        menuMapper.add(menu);
+    }
+
+    @Override
+    public void update(Menu menu) {
+        menuMapper.update(menu);
+    }
+
+    @Override
+    public void del(Long id) {
+        menuMapper.del(id);
+    }
+
+
+    @Override
+    public void delByMenuId(Long menuId) {
+        menuMapper.delByMenuId(menuId);
+    }
+
+
 }

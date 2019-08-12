@@ -24,6 +24,7 @@ public interface RoleService {
 
     public void del(Long id);
 
+    public String selByRoleId( Long roleId);
 
     public List<Menu> selMenu(Long pid,Integer leval);
 }

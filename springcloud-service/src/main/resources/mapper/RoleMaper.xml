@@ -45,6 +45,10 @@
         delete from base_role_menu where roleId = #{roleId}
     </delete>
 
+    <select id="selByRoleId" resultType="java.lang.String">
+        select bu.userName from base_user_role bur inner join base_user bu on bur.userId=bu.id where bur.roleId=#{roleId}
+    </select>
+
     <select id="selMenu" resultType="com.mhk.pojo.entity.Menu">
         select * from  base_menu  where leval=#{leval} and parentId=#{pid}
     </select>

@@ -14,4 +14,13 @@ import java.util.List;
 public interface MenuMapper {
 
     public List<Menu> selMenu(@Param("pid") Long pid, @Param("leval") Integer leval);
+
+    public void add(Menu menu);
+
+    public  void update(Menu menu);
+
+    public void del(Long id);
+
+    public void delByMenuId(@Param("menuId") Long menuId);
+
 }

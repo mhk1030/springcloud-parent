@@ -26,6 +26,8 @@ public interface RoleMapper {
 
     public void del(Long id);
 
+    public String selByRoleId(@Param("roleId") Long roleId);
+
     public void delRoleMenu(@Param("roleId") Long roleId);
 
     public  void  delUserRole(@Param("roleId") Long roleId);

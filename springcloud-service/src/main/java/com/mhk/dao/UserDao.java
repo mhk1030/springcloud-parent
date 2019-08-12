@@ -24,4 +24,7 @@ public interface UserDao extends JpaRepository<User,Long> {
     @Query(value = "insert into base_user_role(roleId,userId) values(?1,?2)",nativeQuery = true)
     public void addRole(long roleId,long userId);
 
+    @Query(value = "select * from base_user where loginName=?1",nativeQuery = true)
+    public User selByLoginName(String loginName);
+
 }

@@ -82,6 +82,13 @@ public class UserService {
         userDao.save(user);
     }
 
+   public User selByLoginName(String loginName){
+
+       User user = userDao.selByLoginName(loginName);
+       return user;
+   }
+
+
     public void del(Long id){
         userDao.deleteById(id);
     }

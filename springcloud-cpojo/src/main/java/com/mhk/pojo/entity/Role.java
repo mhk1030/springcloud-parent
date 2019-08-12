@@ -22,6 +22,9 @@ public class Role extends BaseAuditable {
     @Column(name = "roleName")
     private String roleName;
 
+    @Transient
+    private Long userid;
+
     @Column(name = "miaoshu")
     private String miaoshu;
 
@@ -30,5 +33,8 @@ public class Role extends BaseAuditable {
 
     @Transient
     private Long[] menuId;
+
+    @Transient
+    private String userName;
 
 }

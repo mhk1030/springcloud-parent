@@ -8,4 +8,25 @@
         select * from  base_menu  where leval=#{leval} and parentId=#{pid}
     </select>
 
+    <insert id="add">
+        insert into base_menu(id,menuName,url,leval,parentId) values(#{id},#{menuName},#{url},#{leval},#{parentId});
+    </insert>
+
+    <update id="update">
+        update base_menu set menuName=#{menuName},
+                             url=#{url}
+                             where id = #{id}
+    </update>
+
+    <delete id="del">
+        delete from base_menu where id = #{id}
+    </delete>
+
+
+
+
+    <delete id="delByMenuId">
+        delete from base_role_menu where menuId = #{menuId}
+    </delete>
+
 </mapper>

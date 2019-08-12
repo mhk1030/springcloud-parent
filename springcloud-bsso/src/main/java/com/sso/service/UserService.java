@@ -34,6 +34,7 @@ public class UserService {
         User byLoginName = userDao.findByLoginName(loginName);
         if (byLoginName != null) {
             Role role = roleDao.forRoleByUserId(byLoginName.getId());
+            role.setUserid(byLoginName.getId());
             byLoginName.setRole(role);
             if (role != null) {
                 List<Menu> firstMneu = menuDao.getFirstMneu(role.getId(), 1);

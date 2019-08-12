@@ -14,10 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.repository.query.Param;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -31,6 +28,7 @@ import java.util.Map;
  * @作者 孟慧康
  * @时间 2019/8/6 19:39
  */
+
 @RestController
 @RequestMapping("user")
 public class UserController {
@@ -82,13 +80,22 @@ public class UserController {
 
     @RequestMapping("add")
     public ResponseResult add(@RequestBody User user){
-        user.setId(UID.next());
-        user.setUrl(url);
-        String password = MD5.encryptPassword(user.getPassword(), "mhk");
-        user.setPassword(password);
-        userService.add(user);
         ResponseResult responseResult = ResponseResult.getResponseResult();
-        responseResult.setCode(200);
+
+        User user1 = userService.selByLoginName(user.getLoginName());
+        responseResult.setCode(500);
+        responseResult.setError("此用户已存在！");
+        if(user1 == null){
+            user.setId(UID.next());
+            user.setUrl(url);
+            String password = MD5.encryptPassword(user.getPassword(), "mhk");
+            user.setPassword(password);
+            userService.add(user);
+            responseResult.setError("");
+            responseResult.setCode(200);
+            responseResult.setSuccess("添加用户成功！");
+        }
+
         return responseResult;
     }
 

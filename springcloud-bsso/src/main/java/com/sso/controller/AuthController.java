@@ -12,10 +12,7 @@ import com.sso.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -49,11 +46,13 @@ public class AuthController {
         }
         if (map != null && map.get("loginname") != null) {
             User user = userService.getUserByLogin(map.get("loginname").toString());
+            System.out.println("..........."+user);
             if (user != null) {
                 String password = MD5.encryptPassword(map.get("password").toString(), "mhk");
                 System.out.println(password);
                 if (user.getPassword().equals(password)) {
-                    String userinfo = JSON.toJSONString(user);
+                    String userinfo = JSON.toJSONString(user.getRole());
+                    System.out.println(userinfo);
                     String token = JWTUtils.generateToken(userinfo);
                     responseResult.setToken(token);
 

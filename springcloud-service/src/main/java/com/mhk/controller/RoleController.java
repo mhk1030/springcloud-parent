@@ -55,9 +55,16 @@ public class RoleController {
 
     @RequestMapping("roleDel")
     public ResponseResult del(@RequestBody Role role){
-        roleService.del(role.getId());
+        String userName = roleService.selByRoleId(role.getId());
         ResponseResult responseResult = ResponseResult.getResponseResult();
-        responseResult.setCode(200);
+        responseResult.setCode(500);
+        responseResult.setError(userName+"用户已绑定此用户，请先删除用户");
+        if(userName == null){
+            roleService.del(role.getId());
+            responseResult.setCode(200);
+            responseResult.setError("");
+            responseResult.setSuccess("删除成功！");
+        }
         return  responseResult;
     }
 

@@ -3,7 +3,9 @@ package com.mhk.controller;
 import com.mhk.pojo.ResponseResult;
 import com.mhk.pojo.entity.Menu;
 import com.mhk.service.MenuService;
+import com.mhk.utils.UID;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,5 +30,37 @@ public class MenuController {
         responseResult.setCode(200);
         return responseResult;
     }
+
+    @RequestMapping("menuAdd")
+    public ResponseResult add(@RequestBody Menu menu){
+        menu.setLeval(menu.getLeval()+1);
+        menu.setParentId(menu.getId());
+        menu.setId(UID.next());
+        System.out.println(menu);
+        menuService.add(menu);
+        ResponseResult responseResult = ResponseResult.getResponseResult();
+        responseResult.setCode(200);
+        return responseResult;
+    }
+
+    @RequestMapping("menuUpdate")
+    public ResponseResult update(@RequestBody Menu menu){
+        menuService.update(menu);
+        ResponseResult responseResult = ResponseResult.getResponseResult();
+        responseResult.setCode(200);
+        return responseResult;
+    }
+
+    @RequestMapping("menuDel")
+    public ResponseResult del(@RequestBody Menu menu){
+        menuService.del(menu.getId());
+        menuService.delByMenuId(menu.getId());
+        ResponseResult responseResult = ResponseResult.getResponseResult();
+        responseResult.setCode(200);
+        return responseResult;
+    }
+
+
+
 
 }

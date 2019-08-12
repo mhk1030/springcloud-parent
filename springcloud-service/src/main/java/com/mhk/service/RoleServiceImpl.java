@@ -60,6 +60,12 @@ public class RoleServiceImpl implements RoleService{
     }
 
     @Override
+    public String selByRoleId(Long roleId) {
+        String userName = roleMapper.selByRoleId(roleId);
+        return userName;
+    }
+
+    @Override
     public List<Menu> selMenu(Long pid, Integer leval) {
         List<Menu> list = roleMapper.selMenu(pid, leval);
         System.out.println("=============");
