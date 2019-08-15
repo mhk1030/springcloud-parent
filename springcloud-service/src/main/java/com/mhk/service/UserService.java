@@ -1,111 +1,32 @@
 package com.mhk.service;
 
-import com.mhk.dao.RoleDao;
-import com.mhk.dao.UserDao;
+import com.github.pagehelper.PageInfo;
 import com.mhk.pojo.entity.Role;
 import com.mhk.pojo.entity.User;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
-import org.springframework.stereotype.Component;
+import org.apache.ibatis.annotations.Param;
 
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @作者 孟慧康
- * @时间 2019/8/6 20:10
+ * @时间 2019/8/13 19:15
  */
-@Component
-public class UserService {
 
-    @Autowired
-    private UserDao userDao;
+public interface UserService {
 
-    @Autowired
-    private RoleDao roleDao;
+    public PageInfo<User> selAll(Integer cpage,Integer pageSize,String userName, String start, String end, String sex1);
 
-    @Autowired
-    private LocalContainerEntityManagerFactoryBean localContainerEntityManagerFactoryBean;
+    public void add(User user);
 
-    public  Map<String, Object> selAll(Integer cpage,Integer pageSize,String uname,String start,String end,String sex){
-        EntityManager entityManager = localContainerEntityManagerFactoryBean.getNativeEntityManagerFactory().createEntityManager();
+    public void update(User user);
 
-        StringBuffer stringBuffer = new StringBuffer("select * from base_user where 1=1");
-        StringBuffer stringBuffer1 = new StringBuffer("select count(*) from base_user where 1=1");
+    public User selByLoginName(String loginName);
 
-        if( uname !=null && uname != ""){
-            stringBuffer.append(" and  userName like concat('%','"+uname+"','%')");
-            stringBuffer1.append(" and  userName like concat('%','"+uname+"','%') ");
-        }
-        if(start != null && start != ""){
-            stringBuffer.append(" and createTime >= '"+start+"'");
-            stringBuffer1.append(" and createTime >= '"+start+"'");
-        }
-        if(end != null && end != ""){
-            stringBuffer.append(" and createTime <= '"+end+"'");
-            stringBuffer1.append(" and createTime <= '"+end+"'");
-        }
-        if(sex != null && sex!= ""){
-            Integer sex1 = Integer.valueOf(sex);
-            stringBuffer.append(" and sex = "+sex1+"");
-            stringBuffer1.append(" and sex = "+sex1+"");
-        }
+    public void del(Long id);
 
-        stringBuffer.append(" limit "+(cpage-1)*pageSize+","+pageSize);
+    public List<Role> selRole();
 
-        Query nativeQuery = entityManager.createNativeQuery(stringBuffer.toString(), User.class);
-        Query nativeQuery1 = entityManager.createNativeQuery(stringBuffer1.toString());
+    public void delRole(Long userId);
 
-        List<User> list = nativeQuery.getResultList();
-        /*for (User user: list) {
-            Role role = roleDao.selById(user.getId());
-            user.setRole(role);
-        }*/
-
-
-
-        Map<String, Object> map = new HashMap<>();
-        map.put("total",nativeQuery1.getResultList().get(0));
-        map.put("list",list);
-        return map;
-    }
-
-
-
-
-    public void add(User user){
-        userDao.save(user);
-    }
-
-   public User selByLoginName(String loginName){
-
-       User user = userDao.selByLoginName(loginName);
-       return user;
-   }
-
-
-    public void del(Long id){
-        userDao.deleteById(id);
-    }
-
-    public List<Role> selRole(){
-        List<Role> list = roleDao.findAll();
-        return list;
-    }
-
-
-    public void delRole(Long userId){
-        userDao.delRole(userId);
-    }
-
-    public void addRole(long roleId,long userId){
-        userDao.addRole(roleId,userId);
-    }
-
-
+    public void addRole(Long roleId,Long userId);
 }

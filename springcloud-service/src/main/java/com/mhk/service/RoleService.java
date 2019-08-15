@@ -3,6 +3,7 @@ package com.mhk.service;
 import com.github.pagehelper.PageInfo;
 import com.mhk.pojo.entity.Menu;
 import com.mhk.pojo.entity.Role;
+import com.mhk.pojo.entity.User;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +25,7 @@ public interface RoleService {
 
     public void del(Long id);
 
-    public String selByRoleId( Long roleId);
+    public List<User> selByRoleId(Long roleId);
 
-    public List<Menu> selMenu(Long pid,Integer leval);
+    public List<Menu> selMenu(Long pid,Integer leval,Long roleId);
 }

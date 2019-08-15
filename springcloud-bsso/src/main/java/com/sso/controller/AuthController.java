@@ -9,6 +9,8 @@ import com.mhk.random.VerifyCodeUtils;
 import com.mhk.utils.MD5;
 import com.mhk.utils.UID;
 import com.sso.service.UserService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -24,6 +26,7 @@ import java.util.concurrent.TimeUnit;
  * @作者 孟慧康
  * @时间 2019/8/5 15:42
  */
+@Api(tags = "这是sso单点登录接口")
 @RestController
 public class AuthController {
 
@@ -33,6 +36,8 @@ public class AuthController {
     @Autowired
     private UserService userService;
 
+    @PostMapping("登录接口")
+    @ApiOperation("这是登录的方法login")
     @RequestMapping("login")
     public ResponseResult toLogin(@RequestBody Map<String,Object> map) throws LoginException {
         ResponseResult responseResult = ResponseResult.getResponseResult();
@@ -51,7 +56,12 @@ public class AuthController {
                 String password = MD5.encryptPassword(map.get("password").toString(), "mhk");
                 System.out.println(password);
                 if (user.getPassword().equals(password)) {
-                    String userinfo = JSON.toJSONString(user.getRole());
+                    User user1 = new User();
+                    user1.setId(user.getId());
+                    user1.setUserName(user.getUserName());
+                    user1.setLoginName(user.getLoginName());
+                    user1.setAuthmap(user.getAuthmap());
+                    String userinfo = JSON.toJSONString(user1);
                     System.out.println(userinfo);
                     String token = JWTUtils.generateToken(userinfo);
                     responseResult.setToken(token);
@@ -89,6 +99,8 @@ public class AuthController {
      * @param response
      * @return
      */
+    @PostMapping("验证码接口")
+    @ApiOperation("这是登录的方法获取验证码方法")
     @RequestMapping("getCode")
     public ResponseResult getCode(HttpServletRequest request, HttpServletResponse response){
         Cookie[] cookies = request.getCookies();

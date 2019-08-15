@@ -22,7 +22,7 @@ public class MessageException {
             MyException myException = (MyException) e;
             responseResult.setSuccess(myException.getMessage());
         }
-        responseResult.setError("运行时未知错误");
+        responseResult.setError("运行时的未知错误");
         return responseResult;
     }
 

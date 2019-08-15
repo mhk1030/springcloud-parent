@@ -2,6 +2,7 @@ package com.mhk.dao;
 
 import com.mhk.pojo.entity.Menu;
 import com.mhk.pojo.entity.Role;
+import com.mhk.pojo.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -26,11 +27,11 @@ public interface RoleMapper {
 
     public void del(Long id);
 
-    public String selByRoleId(@Param("roleId") Long roleId);
+    public List<User> selByRoleId(@Param("roleId") Long roleId);
 
     public void delRoleMenu(@Param("roleId") Long roleId);
 
     public  void  delUserRole(@Param("roleId") Long roleId);
 
-    public List<Menu> selMenu(@Param("pid") Long pid,@Param("leval") Integer leval);
+    public List<Menu> selMenu(@Param("pid") Long pid,@Param("leval") Integer leval,@Param("roleId") Long roleId);
 }

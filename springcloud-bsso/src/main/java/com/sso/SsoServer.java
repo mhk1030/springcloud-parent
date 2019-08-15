@@ -21,7 +21,7 @@ public class SsoServer {
         SpringApplication.run(SsoServer.class,args);
     }
 
-    @RequestMapping(name = "health")
+   @RequestMapping("health")
     public String health(){
         System.out.println("===SSO-SERVER==OK != ==========");
         return "ok";

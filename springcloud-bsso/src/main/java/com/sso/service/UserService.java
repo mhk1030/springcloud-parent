@@ -34,7 +34,6 @@ public class UserService {
         User byLoginName = userDao.findByLoginName(loginName);
         if (byLoginName != null) {
             Role role = roleDao.forRoleByUserId(byLoginName.getId());
-            role.setUserid(byLoginName.getId());
             byLoginName.setRole(role);
             if (role != null) {
                 List<Menu> firstMneu = menuDao.getFirstMneu(role.getId(), 1);
@@ -58,9 +57,8 @@ public class UserService {
                 if (leval == 4) {
                     for (Menu menu1 : firstMneu1) {
                         System.out.println(menu1);
-                        authMap.put(menu1.getUrl(), "");
+                        authMap.put(menu1.getUrl(), "123");
                     }
-
                 }
                 menu.setMenuList(firstMneu1);
                 getForMenu(firstMneu1, roleId, authMap);

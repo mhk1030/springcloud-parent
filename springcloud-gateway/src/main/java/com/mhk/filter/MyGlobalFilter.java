@@ -67,7 +67,7 @@ public class MyGlobalFilter implements GlobalFilter {
                 response.setStatusCode(HttpStatus.SEE_OTHER);
                 return exchange.getResponse().setComplete();
             }
-            String userId = jsonObject.get("userid").toString();
+            String userId = jsonObject.get("id").toString();
             Boolean isok = redisTemplate.opsForHash().hasKey("USERDATAAUTH" + userId, currentpath);
             if(isok){
                 return chain.filter(exchange);

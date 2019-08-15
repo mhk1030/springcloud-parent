@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.mhk.dao.RoleMapper;
 import com.mhk.pojo.entity.Menu;
 import com.mhk.pojo.entity.Role;
+import com.mhk.pojo.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -60,28 +61,28 @@ public class RoleServiceImpl implements RoleService{
     }
 
     @Override
-    public String selByRoleId(Long roleId) {
-        String userName = roleMapper.selByRoleId(roleId);
-        return userName;
-    }
-
-    @Override
-    public List<Menu> selMenu(Long pid, Integer leval) {
-        List<Menu> list = roleMapper.selMenu(pid, leval);
-        System.out.println("=============");
-        this.getForMenu(list);
+    public List<User> selByRoleId(Long roleId) {
+        List<User> list = roleMapper.selByRoleId(roleId);
         return list;
     }
 
-    public void getForMenu(List<Menu> firstMenu){
+    @Override
+    public List<Menu> selMenu(Long pid, Integer leval,Long roleId) {
+        List<Menu> list = roleMapper.selMenu(pid, leval,roleId);
+        System.out.println("=============");
+        this.getForMenu(list,roleId);
+        return list;
+    }
+
+    public void getForMenu(List<Menu> firstMenu,Long roleId){
         for (Menu menu: firstMenu) {
             Long pid = menu.getId();
             int leval = menu.getLeval()+1;
-            List<Menu> menus = roleMapper.selMenu(pid, leval);
+            List<Menu> menus = roleMapper.selMenu(pid, leval,roleId);
             System.out.println(menus);
             if(menus != null){
                 menu.setMenuList(menus);
-                getForMenu(menus);
+                getForMenu(menus,roleId);
             }else{
                 break;
             }

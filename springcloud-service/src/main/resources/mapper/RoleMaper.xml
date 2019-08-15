@@ -34,7 +34,7 @@
 
 
     <delete id="del">
-        delete from base_role where id = #{id}
+        delete from base_user_role where roleId = #{id}
     </delete>
 
     <delete id="delUserRole">
@@ -45,12 +45,15 @@
         delete from base_role_menu where roleId = #{roleId}
     </delete>
 
-    <select id="selByRoleId" resultType="java.lang.String">
-        select bu.userName from base_user_role bur inner join base_user bu on bur.userId=bu.id where bur.roleId=#{roleId}
+    <select id="selByRoleId" resultType="com.mhk.pojo.entity.User">
+        select bu.* from base_user_role bur inner join base_user bu on bur.userId=bu.id where bur.roleId=#{roleId}
     </select>
 
     <select id="selMenu" resultType="com.mhk.pojo.entity.Menu">
-        select * from  base_menu  where leval=#{leval} and parentId=#{pid}
+        select bm.* from base_menu bm
+          left join  base_role_menu brm on brm.menuId=bm.id
+          left join base_role br on brm.roleId=br.id
+        where bm.leval=#{leval} and bm.parentId=#{pid} and brm.roleId=#{roleId}
     </select>
 
 </mapper>

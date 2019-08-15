@@ -1,6 +1,5 @@
 package com.mhk.test;
 
-import com.mhk.dao.UserDao;
 import com.mhk.pojo.entity.User;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,17 +15,5 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 public class TestS {
 
-    @Autowired
-    private UserDao userDao;
 
-    @Test
-    public void add(){
-        User user = new User();
-        user.setId(111L);
-        user.setUserName("ww");
-        user.setLoginName("rr");
-        user.setPassword("ddd");
-        user.setSex(1);
-        userDao.save(user);
-    }
 }

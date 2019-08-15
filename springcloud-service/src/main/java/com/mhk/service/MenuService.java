@@ -11,7 +11,7 @@ import java.util.List;
  */
 public interface MenuService {
 
-    public List<Menu> selMenu( Long pid,Integer leval);
+    public List<Menu> selMenu( Long pid,Integer leval,Long roleId);
 
     public void add(Menu menu);
 

@@ -13,7 +13,7 @@ import java.util.List;
 @Mapper
 public interface MenuMapper {
 
-    public List<Menu> selMenu(@Param("pid") Long pid, @Param("leval") Integer leval);
+    public List<Menu> selMenu(@Param("pid") Long pid, @Param("leval") Integer leval,@Param("roleId") Long roleId);
 
     public void add(Menu menu);
 

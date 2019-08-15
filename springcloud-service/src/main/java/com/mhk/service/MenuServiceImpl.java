@@ -17,21 +17,21 @@ public class MenuServiceImpl implements MenuService{
     @Autowired
     private MenuMapper menuMapper;
     @Override
-    public List<Menu> selMenu(Long pid, Integer leval) {
-        List<Menu> list = menuMapper.selMenu(pid, leval);
-        this.getForMenu(list);
+    public List<Menu> selMenu(Long pid, Integer leval,Long roleId) {
+        List<Menu> list = menuMapper.selMenu(pid, leval,roleId);
+        this.getForMenu(list,roleId);
         return list;
     }
 
-    public void getForMenu(List<Menu> firstMenu){
+    public void getForMenu(List<Menu> firstMenu,Long roleId){
         for (Menu menu: firstMenu) {
             Long pid = menu.getId();
             int leval = menu.getLeval()+1;
-            List<Menu> menus = menuMapper.selMenu(pid, leval);
+            List<Menu> menus = menuMapper.selMenu(pid, leval,roleId);
             System.out.println(menus);
             if(menus != null){
                 menu.setMenuList(menus);
-                getForMenu(menus);
+                getForMenu(menus,roleId);
             }else{
                 break;
             }
