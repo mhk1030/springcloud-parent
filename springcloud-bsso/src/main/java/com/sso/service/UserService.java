@@ -70,6 +70,23 @@ public class UserService {
         }
 
     }
+
+    public User selByTel(String tel) {
+        User user = userDao.findByTel(tel);
+        if(user != null){
+            Role role = roleDao.forRoleByUserId(user.getId());
+            user.setRole(role);
+            if (role != null) {
+                List<Menu> firstMneu = menuDao.getFirstMneu(role.getId(), 1);
+                Map<String, String> authMap = new Hashtable<>();
+                this.getForMenu(firstMneu, role.getId(), authMap);
+                user.setAuthmap(authMap);
+                user.setMenuList(firstMneu);
+            }
+        }
+        return user;
+    }
+
 }
 
 

@@ -4,10 +4,10 @@ import com.mhk.pojo.base.BaseAuditable;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeSet;
 
 /**
  * @作者 孟慧康
@@ -16,7 +16,7 @@ import java.util.Map;
 @Data
 @Entity
 @Table(name = "base_user")
-public class User  {
+public class User extends BaseAuditable{
 
     @Column(name="id")
     @Id
@@ -43,8 +43,7 @@ public class User  {
     @Column(name = "url")
     private String url;
 
-    @Column(name = "createTime")
-    private Date createTime;
+
 
     @Transient
     private List<Menu> menuList;
@@ -54,5 +53,11 @@ public class User  {
 
     @Transient
     private Map<String,String> authmap;
+
+    @Transient
+    private String[] keys;
+
+    @Transient
+    private String[] values;
 
 }
