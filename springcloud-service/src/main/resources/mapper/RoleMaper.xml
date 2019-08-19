@@ -16,12 +16,13 @@
     </select>
 
     <insert id="add">
-        insert into base_role(id,roleName,miaoShu) values(#{id},#{roleName},#{miaoshu})
+        insert into base_role(id,roleName,miaoShu,leval) values(#{id},#{roleName},#{miaoshu},#{leval})
     </insert>
 
     <update id="update">
         update base_role set roleName=#{roleName},
-                             miaoShu=#{miaoshu}
+                             miaoShu=#{miaoshu},
+                             leval=#{leval}
                           where id = #{id}
     </update>
 

@@ -1,5 +1,6 @@
 package com.sso.test;
 
+import com.sso.controller.AuthController;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.mail.internet.MimeMessage;
 import java.io.FileNotFoundException;
+import java.util.HashMap;
 
 /**
  * @作者 孟慧康
@@ -42,6 +44,7 @@ public class Test2 {
             System.out.println("html格式邮件发送失败");
         }
     }
+
 
 
 

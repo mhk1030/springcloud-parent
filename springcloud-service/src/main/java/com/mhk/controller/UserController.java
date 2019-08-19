@@ -89,6 +89,7 @@ public class UserController {
         ResponseResult responseResult = ResponseResult.getResponseResult();
 
         User user1 = userService.selByLoginName(user.getLoginName());
+
         responseResult.setCode(500);
         responseResult.setError("此用户已存在！");
         if(user1 == null){
@@ -97,6 +98,7 @@ public class UserController {
             String password = MD5.encryptPassword(user.getPassword(), "mhk");
             user.setPassword(password);
             userService.add(user);
+            userService.addRole(1908141057450001L,user.getId());
             responseResult.setError("");
             responseResult.setCode(200);
             responseResult.setSuccess("添加用户成功！");
@@ -134,6 +136,8 @@ public class UserController {
         return responseResult;
     }
 
+    @PostMapping("查找角色接口")
+    @ApiOperation("这是查找角色的方法selRole")
     @RequestMapping("selRole")
     public ResponseResult selRole(){
         List<Role> list = userService.selRole();
@@ -144,6 +148,8 @@ public class UserController {
         return responseResult;
     }
 
+    @PostMapping("修改绑定角色接口")
+    @ApiOperation("这是修改绑定角色的方法editRole")
     @RequestMapping("editRole")
     public ResponseResult editRole(@RequestBody Map<String,String> map){
         userService.delRole(Long.valueOf(map.get("userId").toString()));

@@ -87,10 +87,22 @@ public class UserService {
         return user;
     }
 
-}
 
 
 
 
+
+
+    public User findEmail (String userName){
+                User user = userDao.findByUserName(userName);
+                return user;
+            }
+
+            public void editPass (String password, String userName){
+                userDao.editPass(password, userName);
+            }
+
+
+        }
 
 

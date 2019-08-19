@@ -15,9 +15,13 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.http.HttpResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -81,10 +85,12 @@ public class AuthController {
                     /*用户访问量统计*/
                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
                     String mouth = simpleDateFormat.format(new Date());
-                    redisTemplate.opsForValue().set(simpleDateFormat.format(new Date())+user.getId(),"");
-                    redisTemplate.expire(simpleDateFormat.format(new Date())+user.getId(),1000*60*60*24,TimeUnit.MINUTES);
-                    if(!redisTemplate.hasKey(simpleDateFormat.format(new Date())+user.getId())){
 
+                    //redisTemplate.expire(simpleDateFormat.format(new Date()),1000*60*60*24,TimeUnit.MINUTES);
+
+                    if(!redisTemplate.hasKey(mouth+user.getId())){
+                        redisTemplate.opsForValue().set(mouth+user.getId(),"");
+                        redisTemplate.expire(mouth+user.getId(),1000*60*60*60*24,TimeUnit.MINUTES);
                         if(redisTemplate.hasKey(mouth)){
                             String value = redisTemplate.opsForValue().get(mouth);
                             Integer value1 = Integer.valueOf(value)+1;
@@ -92,12 +98,19 @@ public class AuthController {
                         }else{
                             redisTemplate.opsForValue().set(mouth,"1");
                         }
+                    }else{
+                        redisTemplate.opsForValue().set(mouth+user.getId(),"");
+                        redisTemplate.expire(mouth+user.getId(),1000*60*60*60*24,TimeUnit.MINUTES);
                     }
                     String[] values = new String[7];
                     String[] keys = new String[7];
                     String format = simpleDateFormat.format(new Date(System.currentTimeMillis()));
                     for (int i = 0; i <keys.length ; i++) {
-                        String str = redisTemplate.opsForValue().get(format);
+                        String str=null;
+                        if(!redisTemplate.hasKey(format)){
+                            str = "0";
+                        }
+                         str = redisTemplate.opsForValue().get(format);
                         values[i]=str;
                         keys[i]=format;
                         redisTemplate.expire(format,1000*60*60*24*(7-i),TimeUnit.MINUTES);
@@ -154,7 +167,8 @@ public class AuthController {
     }
 
 
-
+    @PostMapping("手机验证接口")
+    @ApiOperation("这是手机发送验证码的方法getcode")
    @RequestMapping("getcode")
     public ResponseResult getcode(@RequestBody Map<String,String> map){
        ResponseResult responseResult = ResponseResult.getResponseResult();
@@ -175,6 +189,7 @@ public class AuthController {
                querys.put("param", "code:"+code);
                querys.put("tpl_id", "TP1711063");
                Map<String, String> bodys = new HashMap<String, String>();
+               System.out.println(code+"llllllll");
                redisTemplate.opsForValue().set("code"+map.get("phone"),code);
                redisTemplate.expire("code"+map.get("phone"),60*1000,TimeUnit.MINUTES);
                responseResult.setCode(200);
@@ -201,7 +216,8 @@ public class AuthController {
    }
 
 
-
+    @PostMapping("手机验证码接口")
+    @ApiOperation("这是判断验证码的方法smsLogin")
     @RequestMapping("smsLogin")
     public ResponseResult checkCode(@RequestBody Map<String,String> map){
         User user = userService.selByTel(map.get("phone"));
@@ -212,7 +228,13 @@ public class AuthController {
             redisTemplate.expire("code"+map.get("phone"),1000*60*60,TimeUnit.MINUTES);
             if(code.equals(phone)){
 
-                String userinfo = JSON.toJSONString(user);
+                User user1 = new User();
+                user1.setId(user.getId());
+                user1.setUserName(user.getUserName());
+                user1.setLoginName(user.getLoginName());
+                user1.setAuthmap(user.getAuthmap());
+                String userinfo = JSON.toJSONString(user1);
+                System.out.println(userinfo);
                 String token = JWTUtils.generateToken(userinfo);
                 responseResult.setToken(token);
 
@@ -222,7 +244,45 @@ public class AuthController {
 
                 redisTemplate.expire("USERINFO" + user.getId().toString(), 1000*60*60*24*7, TimeUnit.SECONDS);
 
+                /*用户访问量统计*/
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                String mouth = simpleDateFormat.format(new Date());
 
+                //redisTemplate.expire(simpleDateFormat.format(new Date()),1000*60*60*24,TimeUnit.MINUTES);
+
+                if(!redisTemplate.hasKey(mouth+user.getId())){
+                    redisTemplate.opsForValue().set(mouth+user.getId(),"");
+                    redisTemplate.expire(mouth+user.getId(),1000*60*60*60*24,TimeUnit.MINUTES);
+                    if(redisTemplate.hasKey(mouth)){
+                        String value = redisTemplate.opsForValue().get(mouth);
+                        Integer value1 = Integer.valueOf(value)+1;
+                        redisTemplate.opsForValue().set(mouth,value1.toString());
+                    }else{
+                        redisTemplate.opsForValue().set(mouth,"1");
+                    }
+                }else{
+                    redisTemplate.opsForValue().set(mouth+user.getId(),"");
+                    redisTemplate.expire(mouth+user.getId(),1000*60*60*60*24,TimeUnit.MINUTES);
+                }
+                String[] values = new String[7];
+                String[] keys = new String[7];
+                String format = simpleDateFormat.format(new Date(System.currentTimeMillis()));
+                for (int i = 0; i <keys.length ; i++) {
+                    String str=null;
+                    if(!redisTemplate.hasKey(format)){
+                        str = "0";
+                    }
+                    str = redisTemplate.opsForValue().get(format);
+                    values[i]=str;
+                    keys[i]=format;
+                    redisTemplate.expire(format,1000*60*60*24*(7-i),TimeUnit.MINUTES);
+                    format=simpleDateFormat.format(new Date(System.currentTimeMillis()-1000*60*60*24*(i+1)));
+                }
+                /*用户访问量统计*/
+                user.setKeys(keys);
+                user.setValues(values);
+
+                System.out.println(user);
                 responseResult.setResult(user);
                 responseResult.setCode(200);
                 responseResult.setSuccess("验证码有效");
@@ -237,6 +297,69 @@ public class AuthController {
         return responseResult;
     }
 
+    @Value("${spring.mail.username}")
+    private String from;
+    @Autowired
+    private JavaMailSender mailSender;
+
+    @PostMapping("发送邮件接口")
+    @ApiOperation("这是发送邮件的方法checkEamil")
+    @RequestMapping("checkEmail")
+    public ResponseResult checkEmail(@RequestBody Map<String,String> map){
+        User user = userService.findEmail(map.get("username"));
+        ResponseResult responseResult = ResponseResult.getResponseResult();
+        if(user!=null){
+            if(user.getEmail().equals(map.get("emails"))){
+                MimeMessage message=mailSender.createMimeMessage();
+                try {
+                    //true表示需要创建一个multipart message
+                    MimeMessageHelper helper=new MimeMessageHelper(message,true);
+                    helper.setFrom(from);
+                    helper.setTo(map.get("emails"));
+                    helper.setSubject("密码重置");
+                    String code = HttpUtils.getCode();
+                    redisTemplate.opsForValue().set(code,user.getUserName());
+                    redisTemplate.expire(code,1000*60,TimeUnit.MINUTES);
+                    helper.setText("<html><head></head><body><a href="+"http://localhost:8080/email?code="+code+">http://localhost:8080/email?code='"+code+"</a></body></html>",true);
+                    mailSender.send(message);
+                    System.out.println("html格式邮件发送成功");
+                    responseResult.setCode(200);
+                    responseResult.setSuccess("发送成功！");
+                }catch (Exception e){
+                    System.out.println("html格式邮件发送失败");
+                }
+            }else{
+                responseResult.setCode(500);
+                responseResult.setError("请输入正确邮箱！");
+            }
+        }else{
+            responseResult.setCode(500);
+            responseResult.setError("该用户不存在！");
+        }
+        return responseResult;
+    }
+    @PostMapping("邮箱更改密码接口")
+    @ApiOperation("这是更改密码的方法editPass")
+    @RequestMapping("editPass")
+    public ResponseResult editPass(@RequestBody Map<String,String> map){
+        ResponseResult responseResult = ResponseResult.getResponseResult();
+        String code = redisTemplate.opsForValue().get(map.get("code"));
+        if(code != null){
+            if(map.get("username").equals(code)){
+                String password = MD5.encryptPassword(map.get("password"), "mhk");
+                userService.editPass(password,map.get("username"));
+                responseResult.setCode(200);
+                responseResult.setSuccess("修改成功！");
+            }else{
+                responseResult.setCode(500);
+                responseResult.setError("您的用户名与您所需要修改的用户不一致！");
+            }
+        }else{
+            responseResult.setCode(500);
+            responseResult.setError("请进行邮箱验证");
+        }
+        return responseResult;
+    }
 
 
 

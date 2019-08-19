@@ -43,6 +43,9 @@ public class User extends BaseAuditable{
     @Column(name = "url")
     private String url;
 
+    @Column(name = "email")
+    private String email;
+
 
 
     @Transient

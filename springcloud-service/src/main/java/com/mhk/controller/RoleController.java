@@ -42,10 +42,13 @@ public class RoleController {
         return responseResult;
     }
 
+    @PostMapping("添加角色接口")
+    @ApiOperation("这是角色添加的方法roleAdd")
     @RequestMapping("roleAdd")
     public ResponseResult add(@RequestBody Role role){
         role.setId(UID.next());
-        role.setLeval(role.getLeval()+1);
+        Integer leval = role.getLeval();
+        role.setLeval(leval+1);
         System.out.println(role);
         roleService.add(role);
         ResponseResult responseResult = ResponseResult.getResponseResult();
@@ -53,6 +56,8 @@ public class RoleController {
         return  responseResult;
     }
 
+    @PostMapping("修改角色信息接口")
+    @ApiOperation("这是修改角色的方法roleUpdate")
     @RequestMapping("roleUpdate")
     public ResponseResult update(@RequestBody Role role){
         roleService.update(role);
@@ -61,6 +66,8 @@ public class RoleController {
         return  responseResult;
     }
 
+    @PostMapping("删除角色接口")
+    @ApiOperation("这是角色删除的方法roleDel")
     @RequestMapping("roleDel")
     public ResponseResult del(@RequestBody Role role){
         List<User> list = roleService.selByRoleId(role.getId());
@@ -68,7 +75,8 @@ public class RoleController {
         responseResult.setCode(500);
         responseResult.setError("此角色无用户绑定");
         if( list.size() != 0){
-            roleService.del(role.getId());
+            role.setId(1908141057450001L);
+            roleService.update(role);
             responseResult.setCode(200);
             responseResult.setError("");
             responseResult.setSuccess("解绑成功！");
@@ -76,6 +84,8 @@ public class RoleController {
         return  responseResult;
     }
 
+    @PostMapping("查询角色权限接口")
+    @ApiOperation("这是绑定角色权限的方法power")
     @RequestMapping("power")
     public ResponseResult power(@RequestBody Map<String,String> map){
         List<Menu> list = roleService.selMenu(0L, 1,Long.valueOf(map.get("roleId")));
