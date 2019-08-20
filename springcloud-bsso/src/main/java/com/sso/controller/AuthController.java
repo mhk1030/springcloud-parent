@@ -320,7 +320,7 @@ public class AuthController {
                     String code = HttpUtils.getCode();
                     redisTemplate.opsForValue().set(code,user.getUserName());
                     redisTemplate.expire(code,1000*60,TimeUnit.MINUTES);
-                    helper.setText("<html><head></head><body><a href="+"http://localhost:8080/email?code="+code+">http://localhost:8080/email?code='"+code+"</a></body></html>",true);
+                    helper.setText("<html><head></head><body><a href="+"http://localhost:8080/email?code="+code+">http://localhost:8080/email?code="+code+"</a></body></html>",true);
                     mailSender.send(message);
                     System.out.println("html格式邮件发送成功");
                     responseResult.setCode(200);

@@ -30,7 +30,9 @@ public class RoleServiceImpl implements RoleService{
 
         for (Role role:list) {
             List<Long> list1 = roleMapper.selMenuByRoleId(role.getId());
+            List<Long> list2 = roleMapper.selMenuAll(role.getId());
             role.setMenuIds(list1);
+            role.setMenuAll(list2);
         }
         PageInfo<Role> pageInfo = new PageInfo<>(list);
 
@@ -54,10 +56,11 @@ public class RoleServiceImpl implements RoleService{
     }
 
     @Override
-    public void del(Long id) {
-        roleMapper.del(id);
-        roleMapper.delRoleMenu(id);
+    public void del(Long id,List<User> list) {
         roleMapper.delUserRole(id);
+        for (User user:list) {
+            roleMapper.addUser(1908141057450001L,user.getId());
+        }
     }
 
     @Override

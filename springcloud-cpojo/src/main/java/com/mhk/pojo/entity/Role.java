@@ -40,4 +40,7 @@ public class Role extends BaseAuditable {
     @Transient
     private String userName;
 
+    @Transient
+    private List<Long> menuAll;
+
 }

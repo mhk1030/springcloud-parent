@@ -15,14 +15,17 @@
         select bm.id from base_role_menu brm inner join base_menu bm on brm.menuId=bm.id where brm.roleId=#{roleId} and bm.leval=4
     </select>
 
+    <select id="selMenuAll" resultType="java.lang.Long">
+        select bm.id from base_role_menu brm inner join base_menu bm on brm.menuId=bm.id where brm.roleId=#{roleId}
+    </select>
+
     <insert id="add">
         insert into base_role(id,roleName,miaoShu,leval) values(#{id},#{roleName},#{miaoshu},#{leval})
     </insert>
 
     <update id="update">
         update base_role set roleName=#{roleName},
-                             miaoShu=#{miaoshu},
-                             leval=#{leval}
+                             miaoShu=#{miaoshu}
                           where id = #{id}
     </update>
 
@@ -37,6 +40,10 @@
     <delete id="del">
         delete from base_user_role where roleId = #{id}
     </delete>
+
+    <insert id="addUser" >
+        insert into base_user_role(roleId,userId) values(#{roleId},#{userId});
+    </insert>
 
     <delete id="delUserRole">
         delete from base_user_role where roleId = #{roleId}

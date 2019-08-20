@@ -20,14 +20,18 @@
           </if>
       </where>
     </select>
-    
+
+    <select id="selByTel" resultType="com.mhk.pojo.entity.User">
+        select * from base_user where tel = #{tel}
+    </select>
+
     <select id="selRoles" resultType="com.mhk.pojo.entity.Role">
         select br.* from base_user_role bur inner join base_role br on bur.roleId=br.id where bur.userId=#{userId}
     </select>
 
 
     <insert id="add">
-        insert into base_user(id,userName,loginName,password,sex,tel,url) values(#{id},#{userName},#{loginName},#{password},#{sex},#{tel},#{url})
+        insert into base_user(id,userName,loginName,password,sex,tel,url,email) values(#{id},#{userName},#{loginName},#{password},#{sex},#{tel},#{url},#{email})
     </insert>
 
     <update id="update">

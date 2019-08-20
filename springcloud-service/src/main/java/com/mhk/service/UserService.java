@@ -18,6 +18,8 @@ public interface UserService {
 
     public void add(User user);
 
+    public User selByTel(String tel);
+
     public void update(User user);
 
     public User selByLoginName(String loginName);

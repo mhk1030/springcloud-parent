@@ -39,6 +39,12 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    public User selByTel(String tel) {
+        User user = userMapper.selByTel(tel);
+        return user;
+    }
+
+    @Override
     public void update(User user) {
         userMapper.update(user);
     }

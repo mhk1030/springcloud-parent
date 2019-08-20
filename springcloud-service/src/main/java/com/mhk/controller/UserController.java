@@ -90,18 +90,24 @@ public class UserController {
 
         User user1 = userService.selByLoginName(user.getLoginName());
 
-        responseResult.setCode(500);
-        responseResult.setError("此用户已存在！");
         if(user1 == null){
             user.setId(UID.next());
             user.setUrl(url);
             String password = MD5.encryptPassword(user.getPassword(), "mhk");
             user.setPassword(password);
-            userService.add(user);
-            userService.addRole(1908141057450001L,user.getId());
-            responseResult.setError("");
-            responseResult.setCode(200);
-            responseResult.setSuccess("添加用户成功！");
+            User user2 = userService.selByTel(user.getTel());
+            if(user2==null){
+                userService.add(user);
+                userService.addRole(1908141057450001L,user.getId());
+                responseResult.setCode(200);
+                responseResult.setSuccess("添加用户成功！");
+            }else{
+                responseResult.setCode(500);
+                responseResult.setError("此手机号码已存在！");
+            }
+        }else{
+            responseResult.setCode(500);
+            responseResult.setError("此用户已存在！");
         }
 
         return responseResult;

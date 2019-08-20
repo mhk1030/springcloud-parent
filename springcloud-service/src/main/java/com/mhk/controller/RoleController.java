@@ -72,14 +72,15 @@ public class RoleController {
     public ResponseResult del(@RequestBody Role role){
         List<User> list = roleService.selByRoleId(role.getId());
         ResponseResult responseResult = ResponseResult.getResponseResult();
-        responseResult.setCode(500);
-        responseResult.setError("此角色无用户绑定");
+
         if( list.size() != 0){
-            role.setId(1908141057450001L);
-            roleService.update(role);
+            roleService.del(role.getId(),list);
             responseResult.setCode(200);
             responseResult.setError("");
             responseResult.setSuccess("解绑成功！");
+        }else{
+            responseResult.setCode(500);
+            responseResult.setError("此角色无用户绑定");
         }
         return  responseResult;
     }

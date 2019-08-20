@@ -23,7 +23,7 @@ public interface RoleService {
 
     public void update(Role role);
 
-    public void del(Long id);
+    public void del(Long id,List<User> list);
 
     public List<User> selByRoleId(Long roleId);
 

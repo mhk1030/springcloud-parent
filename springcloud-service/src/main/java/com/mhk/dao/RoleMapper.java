@@ -19,11 +19,15 @@ public interface RoleMapper {
 
     public List<Long> selMenuByRoleId(@Param("roleId") Long roleId);
 
+    public List<Long> selMenuAll(@Param("roleId") Long roleId);
+
     public void add(Role role);
 
     public void update(Role role);
 
     public void addMenu(@Param("roleId")Long roleId,@Param("menuId") Long[] menuId);
+
+    public void addUser(@Param("roleId") Long roleId,@Param("userId") Long userId);
 
     public void del(Long id);
 

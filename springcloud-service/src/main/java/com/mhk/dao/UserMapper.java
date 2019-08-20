@@ -20,6 +20,8 @@ public interface UserMapper {
 
     public void add(User user);
 
+    public User selByTel(@Param("tel") String tel);
+
     public void update(User user);
 
     public User selByLoginName(@Param("loginName") String loginName);
