@@ -32,7 +32,7 @@ public class AESUtils {
 
             Cipher cipher = Cipher.getInstance("AES/CBC/NoPadding");//"算法/模式/补码方式"NoPadding PkcsPadding
             int blockSize = cipher.getBlockSize();
-
+            /*aaa*/
             byte[] dataBytes = data.getBytes();
             int plaintextLength = dataBytes.length;
             if (plaintextLength % blockSize != 0) {
